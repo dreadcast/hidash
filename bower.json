@@ -1,0 +1,23 @@
+{
+	"name": "Hi-Dash",
+	"version": "0.0.1",
+	"homepage": "https://github.com/dreadcast/hidash",
+	"description": "Useful mixins for Lo-Dash",
+	"author": "Raphael Gully",
+	
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:dreadcast/hidash.git"
+	},
+
+	"ignore": [
+		".jshintrc",
+		"**/*.txt"
+	],
+	
+	"dependencies": {
+		"lodash": "2.4.1"
+	},
+	
+	"main": "dis/hidash.js"
+}
