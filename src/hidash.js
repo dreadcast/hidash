@@ -1,5 +1,5 @@
 (function(){
-	var _ = require('lodash');
+	var _ = typeof require == 'function' ? require('lodash') : _;
 		
 	var root = this;
 	if (typeof exports !== 'undefined') {
