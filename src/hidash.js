@@ -1,14 +1,16 @@
 (function(){
-	var _ = typeof require == 'function' ? require('lodash') : _;
-		
-	var root = this;
-	if (typeof exports !== 'undefined') {
-		if (typeof module !== 'undefined' && module.exports) {
-			exports = module.exports = _;
+	if(typeof _ != 'function'){
+		var _ = require('lodash');
+			
+		var root = this;
+		if (typeof exports !== 'undefined') {
+			if (typeof module !== 'undefined' && module.exports) {
+				exports = module.exports = _;
+			}
+			exports._ = _;
+		} else {
+			root._ = _;
 		}
-		exports._ = _;
-	} else {
-		root._ = _;
 	}
 	
 	var mergeRecursive = function(obj1, obj2){
