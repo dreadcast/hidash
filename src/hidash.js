@@ -1,6 +1,10 @@
 if(typeof require == 'function'){
-	var _ = require('lodash');
-		
+	try{
+		var _ = require(require('path').resolve('./bower_components/lodash/dist/lodash.js'));		
+	} catch(e){
+		var _ = require('lodash');		
+	}
+	
 	if(typeof exports !== 'undefined'){
 		if(typeof module !== 'undefined' && module.exports)
 			exports = module.exports = _;
@@ -10,7 +14,6 @@ if(typeof require == 'function'){
 } else {
 	window._ = _;
 }
-
 
 var mergeRecursive = function(obj1, obj2){
 		for(var p in obj2){
