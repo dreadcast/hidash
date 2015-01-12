@@ -1,6 +1,22 @@
-(function(){
-	var _ = require('lodash'),
-		mergeRecursive = function(obj1, obj2){
+;(function(_){
+	if(typeof require == 'function'){
+		try{
+			var _ = require(require('path').resolve('./bower_components/lodash/dist/lodash.js'));		
+		} catch(e){
+			var _ = require('lodash');		
+		}
+		
+		if(typeof exports !== 'undefined'){
+			if(typeof module !== 'undefined' && module.exports)
+				exports = module.exports = _;
+				
+			global._ = _;
+		} 
+	} else {
+		window._ = _;
+	}
+	
+	var mergeRecursive = function(obj1, obj2){
 			for(var p in obj2){
 				try {
 					if(_.isArray(obj1[p]) && _.isArray(obj2[p]))
@@ -20,24 +36,17 @@
 			
 			return obj1;
 		},
-				
+		
+		// Cache some _ methods that will be supercharged		
 		contains = _.contains,
 				
 		filter = _.filter;
 	
-	var root = this;
-	if (typeof exports !== 'undefined') {
-		if (typeof module !== 'undefined' && module.exports) {
-			exports = module.exports = _;
-		}
-		exports._ = _;
-	} else {
-		root._ = _;
-	}
-	
 	_.mixin({
 		/**
-		 *	Array
+		 *	Creates an array containing passed argument or return argument if it is already an array.
+		 *	@method from
+		 *	@return {Array}				Created or existing array
 		 */
 		from: function(arg){
 			if(!_.isArray(arg) && !_.isArguments(arg))
@@ -46,10 +55,22 @@
 			return _.toArray(arg);
 		},
 		
+		/**
+		 *	Returns penultimate item from an array or null if array contains less than 2 items
+		 *	@method penultimate
+		 *	@return {Mixed}				Penultimate item from provided array
+		 */
 		penultimate: function(obj){
 			return obj.length > 1 ? obj[obj.length - 2] : null;
 		},
 		
+		/**
+		 *	Joins items from an array with a different glue before last item
+		 *	@method joinLast
+		 *	@param {String} glue		Items delimiter
+		 *	@param {String} stick		Delimiter vefore last item
+		 *	@return {String}			Joined array
+		 */
 		joinLast: function(obj, glue, stick){
 			var last = obj.pop();
 			
@@ -57,11 +78,13 @@
 		},
 		
 		/**
-		 *	Object
+		 *	Get property from object following provided path 
+		 *	@method getFromPath
+		 *	@param {String} path		Path to property
+		 *	@return {Mixed}				Property
 		 */
 		getFromPath: function(obj, path){
-			if (typeof path == 'string')
-				path = path.split('.');
+			path = path.split('.');
 				
 			for(var i = 0, l = path.length; i < l; i++){
 				if (hasOwnProperty.call(obj, path[i]))
@@ -74,6 +97,13 @@
 			return obj;
 		},
 	
+		/**
+		 *	Set property of object following provided path 
+		 *	@method setFromPath
+		 *	@param {String} path		Path to property
+		 *	@param {Mixed} value		Property value
+		 *	@return {Object}			Object
+		 */
 		setFromPath: function(obj, path, value){
 			var parts = path.split('.'),
 				cl = obj;
@@ -93,6 +123,12 @@
 			return cl;
 		},
 		
+		/**
+		 *	Removes property of object following provided path 
+		 *	@method eraseFromPath
+		 *	@param {String} path		Path to property
+		 *	@return {Object}			Object
+		 */
 		eraseFromPath: function(obj, path){
 			var parts = path.split('.'),
 				cl = obj;
@@ -237,6 +273,30 @@
 			loop.call(arr);
 			
 			return arr;
+		},
+		closest: function(obj, number){		
+			if((current = obj.length) < 2)
+				return l - 1;
+				
+			for(var current, previous = Math.abs(obj[--current] - number); current--;)
+				if(previous < (previous = Math.abs(obj[current] - number)))
+					break;
+					
+			return obj[current + 1];
+		
+			var closest = -1,
+				prev = Math.abs(obj[0] - number);
+			
+			for (var i = 1; i < obj.length; i++){
+				var diff = Math.abs(obj[i] - number);
+				
+				if (diff <= prev){
+					prev = diff;
+					closest = obj[i];
+				}
+			}
+			
+			return closest;
 		}
 	});
-})();
+})(_);
