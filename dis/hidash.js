@@ -1,4 +1,5 @@
-;(function(_){
+;(function(root){
+	console.info(root)
 	if(typeof require == 'function'){
 		try{
 			var _ = require(require('path').resolve('./bower_components/lodash/dist/lodash.js'));		
@@ -10,10 +11,10 @@
 			if(typeof module !== 'undefined' && module.exports)
 				exports = module.exports = _;
 				
-			global._ = _;
+			root._ = _;
 		} 
 	} else {
-		window._ = _;
+		var _ = root._;
 	}
 	
 	var mergeRecursive = function(obj1, obj2){
@@ -299,4 +300,4 @@
 			return closest;
 		}
 	});
-})(_);
+})(Function('return this')());
