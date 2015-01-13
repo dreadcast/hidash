@@ -1,5 +1,4 @@
 ;(function(root){
-	console.info(root)
 	if(typeof require == 'function'){
 		try{
 			var _ = require(require('path').resolve('./bower_components/lodash/dist/lodash.js'));		
@@ -246,27 +245,36 @@
 		},
 		
 		eachAsync: function(arr, iterator, cb, bind){
-			if(arr.length == 0)
-				return arr;
+			if(_(arr).size() == 0)
+				return cb.call(bind);
 			
+			if(_(arr).isIterable())
+				var keys = _.keys(arr),
+					values = _.values(arr);
+					
 			var i = 0,
 				loop = function(){
 					var cursor;
 					
-					if(i >= this.length)
+					if(i >= _(arr).size())
 						cursor = function(){};
 					
-					else if(i == this.length - 1 && typeOf(cb) == 'function')
+					else if(i == _(arr).size() - 1 && typeOf(cb) == 'function')
 						cursor = function(){
 							cb.call(bind || this);
 							loop.call(this);
 						}.bind(this);
 					
-					else if(i < this.length)
+					else if(i < _(arr).size())
 						cursor = loop.bind(this);
 					
-					if(i < this.length)
-						iterator.call(bind || this, this[i], i, cursor, this);				
+					if(i < _(arr).size()){
+						if(_(arr).isIterable())
+							iterator.call(bind || this, values[i], keys[i], i, cursor, this);	
+						
+						else			
+							iterator.call(bind || this, this[i], i, cursor, this);	
+					}
 					
 					i++;
 				};
@@ -275,6 +283,7 @@
 			
 			return arr;
 		},
+		
 		closest: function(obj, number){		
 			if((current = obj.length) < 2)
 				return l - 1;

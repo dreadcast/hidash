@@ -26,5 +26,5 @@
 		"uglify-js": ">=2.4"
 	},
 	
-	"main": "dis/hidash.js"
+	"main": "src/hidash.js"
 }
