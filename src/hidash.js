@@ -232,26 +232,32 @@
 	
 		eachParallel: function(arr, iterator, cb, bind){
 			var stepsToGo = arr.length,
-				done = function(){
+				cursor = function(){
 					stepsToGo--;
 					
 					if(stepsToGo == 0)
 						cb();
 				};
 			
-			_(arr).each(function(item, index){
-				iterator.call(bind || arr, item, index, done, arr);
-			});
+			if(_(arr).isIterable())
+				_(arr).each(function(item, key, index){
+					iterator.call(bind || arr, item, key, index, cursor, arr);
+				});
+			
+			else
+				_(arr).each(function(item, index){
+					iterator.call(bind || arr, item, index, cursor, arr);
+				});
 		},
 		
 		eachAsync: function(arr, iterator, cb, bind){
 			if(_(arr).size() == 0)
 				return cb.call(bind);
 			
-			if(_(arr).isIterable())
+			if(_.isIterable(arr))
 				var keys = _.keys(arr),
 					values = _.values(arr);
-					
+										
 			var i = 0,
 				loop = function(){
 					var cursor;
@@ -269,7 +275,7 @@
 						cursor = loop.bind(this);
 					
 					if(i < _(arr).size()){
-						if(_(arr).isIterable())
+						if(_.isIterable(arr))
 							iterator.call(bind || this, values[i], keys[i], i, cursor, this);	
 						
 						else			
