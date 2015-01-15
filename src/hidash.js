@@ -171,7 +171,7 @@
 			return false;
 		},
 		
-		merge: function(){
+		deepmerge: function(){
 			var obj1 = arguments[0];
 			
 			for(var q = 1; q < arguments.length; q++)
