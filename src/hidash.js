@@ -265,7 +265,7 @@
 					if(i >= _(arr).size())
 						cursor = function(){};
 					
-					else if(i == _(arr).size() - 1 && typeOf(cb) == 'function')
+					else if(i == _(arr).size() - 1 && _.isFunction(cb))
 						cursor = function(){
 							cb.call(bind || this);
 							loop.call(this);
