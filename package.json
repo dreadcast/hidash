@@ -1,6 +1,6 @@
 {
 	"name": "Hi-Dash",
-	"version": "0.0.1",
+	"version": "0.0.8",
 	"homepage": "https://github.com/dreadcast/hidash",
 	"description": "Useful mixins for Lo-Dash",
 	"author": "Raphael Gully",
