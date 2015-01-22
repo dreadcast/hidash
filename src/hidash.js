@@ -250,6 +250,40 @@
 				});
 		},
 		
+		/**
+		 *	Wait <code>next</code> cursor to be called before next iteration
+		 *	@method eachAsync
+		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
+		 *								Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
+		 *	@param {Function} [cb]		Callback executed after last iteration.
+		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
+		 *	@return {Array} this		Array instance
+		 *	@example
+		 *		[1, 2, 3, 4].eachAsync(function(item, index, cursor, ar){
+		 *			new Request({
+		 *				url: '/rest/' + index,
+		 *				onSuccess: function(){
+		 *					console.info('item #' + index + ' posted');
+		 *					cursor();
+		 *				}
+		 *			}).post();
+		 *		}, function(){ console.info('complete'); })
+		 *
+		 *		// Works with an array of functions...
+		 *		[function(cursor){
+		 *			new Request({
+		 *				url: '/some/url/123',
+		 *				onSuccess: cursor
+		 *			}).get();
+		 *		}, function(cursor){
+		 *			new Request({
+		 *				url: '/some/url/456',
+		 *				onSuccess: cursor
+		 *			}).get();
+		 *		}].eachAsync(function(item, index, cursor, ar){
+		 *			item(cursor);
+		 *		});
+		 */
 		eachAsync: function(arr, iterator, cb, bind){
 			if(_(arr).size() == 0)
 				return cb.call(bind);
@@ -290,6 +324,11 @@
 			return arr;
 		},
 		
+		/**
+		 *	Find value closest to given number in an array of numbers 
+		 *	@method closest
+		 *	@return {Number}			Closest value
+		 */
 		closest: function(obj, number){		
 			if((current = obj.length) < 2)
 				return l - 1;
@@ -313,6 +352,28 @@
 			}
 			
 			return closest;
+		},
+		
+		/**
+		 *	Replace item at index i with given item
+		 *	@method replaceAt
+		 *	@return {Array}				Array instance
+		 */
+		replaceAt: function(arr, item, i){
+			arr.splice(i, 1, item);
+			
+			return arr;
+		},
+		
+		/**
+		 *	Insert item at index i
+		 *	@method insertAt
+		 *	@return {Array}				Array instance
+		 */
+		insertAt: function(arr, item, i){
+			arr.splice(i, 0, item);
+			
+			return arr;
 		}
 	});
 })(Function('return this')());
