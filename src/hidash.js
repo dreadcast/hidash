@@ -374,6 +374,24 @@
 			arr.splice(i, 0, item);
 			
 			return arr;
+		},
+		
+		/**
+		 *	Attempts to execute function, return false if fails
+		 *	@method attempt
+		 *	@param {Function} fn		Function to execute
+		 *	@param {Mixed} arguments*	Arguments to pass to function
+		 *	@return {Mixed} 			Function result or false
+		 */
+		attempt: function(fn){
+			try {
+				var args = _.from(arguments);
+				args.shift();
+				
+				return fn.apply(this, args);
+			} catch(e){
+				return false;
+			}
 		}
 	});
 })(Function('return this')());
