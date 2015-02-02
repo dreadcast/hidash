@@ -150,13 +150,10 @@
 		},
 		
 		keyOf: function(obj, value){
-			var filtered = _(obj).filter(function(value2, key2){
-				return value2 == value;
-			});
-			
-			if(_.size(filtered) > 0)
-				return _.keys(filtered)[0];
-			
+			for(var key in obj)
+				if(Object.prototype.hasOwnProperty.call(obj, key) && obj[key] === value)
+					return key;
+
 			return null;
 		},
 		
