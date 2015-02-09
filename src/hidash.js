@@ -248,6 +248,24 @@
 		},
 		
 		/**
+		 *	Wait <code>next</code> n ms to call next iteration
+		 *	@method eachInterval
+		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
+		 *								Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
+		 *	@param {Function} [cb]		Callback executed after last iteration.
+		 *	@param {Function} [delay]	Delay between each iteration.
+		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
+		 *	@return {Array} this		Array instance
+		 */
+		eachInterval: function(arr, iterator, cb, delay, bind){
+			return _.eachAsync(arr, function(){
+				setTimeout(function(){
+					iterator.apply(this, arguments);
+				}, delay);
+			}, cb, bind);
+		},
+		
+		/**
 		 *	Wait <code>next</code> cursor to be called before next iteration
 		 *	@method eachAsync
 		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
