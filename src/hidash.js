@@ -24,7 +24,7 @@
 					
 					// Property in destination object set; update its value.
 					else if(obj2[p].constructor == Object)
-						obj1[p] = mergeRecursive(obj1[p], obj2[p]) || {};
+						obj1[p] = mergeRecursive(obj1[p], obj2[p]);
 					
 					else
 						obj1[p] = obj2[p];		
@@ -35,7 +35,12 @@
 			}
 			
 			return obj1;
-		};
+		},
+		
+		// Cache some _ methods that will be supercharged		
+		contains = _.contains,
+				
+		filter = _.filter;
 	
 	_.mixin({
 		/**
@@ -152,6 +157,17 @@
 			return null;
 		},
 		
+		contains: function(obj, was, strict){
+			if(_.isArray(obj))
+				return contains(obj, was);
+			
+			for(var prop in obj)
+				if(_[strict ? 'isEqual' : 'isLaxEqual'](obj[prop], was))
+					return true;
+			
+			return false;
+		},
+		
 		deepmerge: function(){
 			var obj1 = arguments[0];
 			
@@ -159,6 +175,20 @@
 				mergeRecursive(obj1, arguments[q]);
 							
 			return obj1;
+		},
+		
+		filter: function(obj, iterator, bind){
+			if(_.isArray(obj))
+				return filter(obj, iterator, bind);
+			
+			var tmp = {};
+			
+			_(obj).each(function(item, key){
+				if(iterator(item, key))
+					tmp[key] = item;
+			}, bind || obj);
+			
+			return tmp;
 		},
 		
 		/**
