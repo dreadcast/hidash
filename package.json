@@ -1,6 +1,6 @@
 {
 	"name": "hidash",
-	"version": "0.0.13",
+	"version": "0.1.1",
 	"homepage": "https://github.com/dreadcast/hidash",
 	"description": "Useful mixins for Lo-Dash",
 	"author": "Raphael Gully",
@@ -19,11 +19,6 @@
 	
 	"dependencies": {
 		"lodash": "2.4.1"
-	},
-	
-	"devDependencies": {
-		"yuidoc": "0.4.0",
-		"uglify-js": ">=2.4"
 	},
 	
 	"main": "src/hidash.js"

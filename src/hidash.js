@@ -1,41 +1,33 @@
 ;(function(root){
 	if(typeof require == 'function'){
-		try{
-			var _ = require(require('path').resolve('./bower_components/lodash/dist/lodash.js'));		
-		} catch(e){
-			var _ = require('lodash');		
-		}
+		var _ = require('lodash');		
 		
-		if(typeof exports !== 'undefined'){
-			if(typeof module !== 'undefined' && module.exports)
-				exports = module.exports = _;
-				
-			root._ = _;
-		} 
+		if(typeof exports !== 'undefined' && typeof module !== 'undefined' && module.exports)
+				module.exports = _;
 	} else {
 		var _ = root._;
 	}
 	
 	var mergeRecursive = function(obj1, obj2){
-			for(var p in obj2){
-				try {
-					if(_.isArray(obj1[p]) && _.isArray(obj2[p]))
-						obj1[p] = _.union(obj1[p], obj2[p]);
-					
-					// Property in destination object set; update its value.
-					else if(obj2[p].constructor == Object)
-						obj1[p] = mergeRecursive(obj1[p], obj2[p]) || {};
-					
-					else
-						obj1[p] = obj2[p];		
-				} catch(e){
-					// Property in destination object not set; create it and set its value.
-					obj1[p] = obj2[p];
-				}
+		for(var p in obj2){
+			try {
+				if(_.isArray(obj1[p]) && _.isArray(obj2[p]))
+					obj1[p] = _.union(obj1[p], obj2[p]);
+				
+				// Property in destination object set; update its value.
+				else if(obj2[p].constructor == Object)
+					obj1[p] = mergeRecursive(obj1[p], obj2[p]) || {};
+				
+				else
+					obj1[p] = obj2[p];		
+			} catch(e){
+				// Property in destination object not set; create it and set its value.
+				obj1[p] = obj2[p];
 			}
-			
-			return obj1;
-		};
+		}
+		
+		return obj1;
+	};
 	
 	_.mixin({
 		/**
@@ -80,7 +72,7 @@
 		 */
 		getFromPath: function(obj, path){
 			path = path.split('.');
-				
+
 			for(var i = 0, l = path.length; i < l; i++){
 				if (hasOwnProperty.call(obj, path[i]))
 					obj = obj[path[i]];
