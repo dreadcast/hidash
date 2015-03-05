@@ -22,7 +22,11 @@
 	},
 	
 	"devDependencies": {
-		"yuidocjs": "0.4.0",
+		"gulp": "3.8.11",
+		"gulp-git": "1.0.1",
+		"gulp-uglify": "1.1.0",
+		
+		"yuidocjs": "0.5.0",
 		"uglify-js": ">=2.4"
 	},
 	

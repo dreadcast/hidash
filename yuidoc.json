@@ -1,0 +1,11 @@
+{
+    "name": "Hidash API",
+    "description": "Hidash is a set of mixins for lodash.",
+    "version": "0.1.1",
+    "url": "https://github.com/dreadcast/hidash",
+    "options": {
+        "paths": ["src"],
+        "exclude": "bower_components",
+        "outdir": "doc"
+    }
+}
