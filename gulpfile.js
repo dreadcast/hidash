@@ -12,18 +12,33 @@ gulp.task('scripts', function(cb){
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('version', function(cb){
+// Version
+gulp.task('setVersion', function(cb){
 	var version = process.argv[4];
-
 
 	gulp.src('./**.json')
 		.pipe(jeditor({
 			version: version
 		}))
-		.pipe(gulp.dest('.'))
-		.pipe(git.commit('Changed version to ' + version))
-		.pipe(git.tag(version, 'Changed version to ' + version));
+		.pipe(gulp.dest('.'));
 });
+
+gulp.task('commitVersion', ['setVersion'], function(cb){
+	var version = process.argv[4];
+
+	gulp.src('./**.json')
+		.pipe(git.commit('Changed version to ' + version));
+});
+
+gulp.task('tagVersion', ['commitVersion'], function(cb){
+	var version = process.argv[4];
+
+	git.tag(version, 'Changed version to ' + version);
+});
+
+gulp.task('version', ['setVersion', 'commitVersion', 'tagVersion']);
+
+
 
 gulp.task('doc', function(cb){
 	fs.readFile('yuidoc.json', function(err, data){
@@ -35,10 +50,10 @@ gulp.task('doc', function(cb){
 	});
 });
 
+
+
 gulp.task('watch', function() {
   gulp.watch('src/hidash.js', ['scripts', 'doc']);
 });
-
-// 	console.log(conf.scripts);
 
 gulp.task('default', ['watch', 'scripts', 'doc']);
