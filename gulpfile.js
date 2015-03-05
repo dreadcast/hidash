@@ -2,7 +2,6 @@ var gulp = require('gulp'),
 	Y = require('yuidocjs'),
 	fs = require('fs'),
 	uglify = require('gulp-uglify'),
-	beautify = require('js-beautify').js_beautify,
 	git = require('gulp-git'),
 	jeditor = require('gulp-json-editor'),
 	_ = require('./src/hidash.js');
