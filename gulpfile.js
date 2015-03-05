@@ -34,9 +34,10 @@ gulp.task('version', function(cb){
 			}, cursor);
 		});
 	}, function(){
-		git.tag(version, 'Changed version to ' + version, null, function(){
-			console.info('Version updated to ' + version);
-		});
+		return gulp.src('./**.json')
+			.pipe(git.add())
+			.pipe(git.commit('Changed version to ' + version))
+			.pipe(git.tag(version, 'Changed version to ' + version))
 	});
 });
 
