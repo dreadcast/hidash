@@ -26,6 +26,7 @@ gulp.task('setVersion', function(){
 
 gulp.task('commitVersion', ['setVersion'], function(){
 	gulp.src('./**.json')
+		.pipe(git.add())
 		.pipe(git.commit('Changed version to ' + version));
 });
 
