@@ -1,3 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/hidash.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Hidash.html">Hidash</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Lodash.html">Lodash</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src/hidash.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
 ;(function(root){
 	/**
 	 * Useful mixins for Lodash
@@ -5,10 +87,10 @@
 	 * @Module Lodash
 	 * @static
 	 */
-	if(typeof require == 'function'){
-		var _ = require('lodash');		
+	if(typeof require == &#x27;function&#x27;){
+		var _ = require(&#x27;lodash&#x27;);		
 		
-		if(typeof exports !== 'undefined' && typeof module !== 'undefined' && module.exports)
+		if(typeof exports !== &#x27;undefined&#x27; &amp;&amp; typeof module !== &#x27;undefined&#x27; &amp;&amp; module.exports)
 				module.exports = _;
 	} else {
 		var _ = root._;
@@ -17,7 +99,7 @@
 	var mergeRecursive = function(obj1, obj2){
 		for(var p in obj2){
 			try {
-				if(_.isArray(obj1[p]) && _.isArray(obj2[p]))
+				if(_.isArray(obj1[p]) &amp;&amp; _.isArray(obj2[p]))
 					obj1[p] = _.union(obj1[p], obj2[p]);
 				
 				// Property in destination object set; update its value.
@@ -42,7 +124,7 @@
 		 *	@return {Array}				Created or existing array
 		 */
 		from: function(arg){
-			if(!_.isArray(arg) && !_.isArguments(arg))
+			if(!_.isArray(arg) &amp;&amp; !_.isArguments(arg))
 				arg = [arg];
 			
 			return _.toArray(arg);
@@ -54,7 +136,7 @@
 		 *	@return {Mixed}				Penultimate item from provided array
 		 */
 		penultimate: function(obj){
-			return obj.length > 1 ? obj[obj.length - 2] : null;
+			return obj.length &gt; 1 ? obj[obj.length - 2] : null;
 		},
 		
 		/**
@@ -77,9 +159,9 @@
 		 *	@return {Mixed}				Property
 		 */
 		getFromPath: function(obj, path){
-			path = path.split('.');
+			path = path.split(&#x27;.&#x27;);
 
-			for(var i = 0, l = path.length; i < l; i++){
+			for(var i = 0, l = path.length; i &lt; l; i++){
 				if (hasOwnProperty.call(obj, path[i]))
 					obj = obj[path[i]];
 				
@@ -98,12 +180,12 @@
 		 *	@return {Object}			Object
 		 */
 		setFromPath: function(obj, path, value){
-			var parts = path.split('.'),
+			var parts = path.split(&#x27;.&#x27;),
 				cl = obj;
 			
-			for(var i = 0, l = parts.length; i < l; i++){
+			for(var i = 0, l = parts.length; i &lt; l; i++){
 				// So when the value does not exist (and is an own property) or is not an object
-				if(i < (l - 1) && !obj.hasOwnProperty(parts[i]))
+				if(i &lt; (l - 1) &amp;&amp; !obj.hasOwnProperty(parts[i]))
 					obj[parts[i]] = {};
 		
 				if(i == l - 1)
@@ -123,14 +205,14 @@
 		 *	@return {Object}			Object
 		 */
 		eraseFromPath: function(obj, path){
-			var parts = path.split('.'),
+			var parts = path.split(&#x27;.&#x27;),
 				cl = obj;
 			
-			for(var i = 0, l = parts.length; i < l; i++){
+			for(var i = 0, l = parts.length; i &lt; l; i++){
 				if (!obj.hasOwnProperty(parts[i])){
 					break;
 				
-				} else if (i < l - 1){
+				} else if (i &lt; l - 1){
 					obj = obj[parts[i]];
 					
 				} else if(i == l - 1){
@@ -144,7 +226,7 @@
 		
 		keyOf: function(obj, value){
 			for(var key in obj)
-				if(Object.prototype.hasOwnProperty.call(obj, key) && obj[key] === value)
+				if(Object.prototype.hasOwnProperty.call(obj, key) &amp;&amp; obj[key] === value)
 					return key;
 
 			return null;
@@ -153,7 +235,7 @@
 		deepmerge: function(){
 			var obj1 = arguments[0];
 			
-			for(var q = 1; q < arguments.length; q++)
+			for(var q = 1; q &lt; arguments.length; q++)
 				mergeRecursive(obj1, arguments[q]);
 							
 			return obj1;
@@ -173,26 +255,26 @@
 		},
 		
 		isIterable: function(was){
-			return _.isObject(was) && !_.isFunction(was) && !_.isArray(was);
+			return _.isObject(was) &amp;&amp; !_.isFunction(was) &amp;&amp; !_.isArray(was);
 		},
 		
 		isJson: function(was){
-			return _.isString(was) && _.isObject(JSON.parse(was));
+			return _.isString(was) &amp;&amp; _.isObject(JSON.parse(was));
 		},
 		
 		isClass: function(obj){
-			return obj.name == 'Class';
+			return obj.name == &#x27;Class&#x27;;
 		},
 		
 		isInstance: function(obj){
-			return obj.constructor.name == 'Class';			
+			return obj.constructor.name == &#x27;Class&#x27;;			
 		},
 		
 		isShit: function(was){
-			if(_.isArray(was) && _compact(was).length == 0)
+			if(_.isArray(was) &amp;&amp; _compact(was).length == 0)
 				return true;
 			
-			return _([null, 'null', undefined, '', false, 'false', 0, '0']).contains(was);
+			return _([null, &#x27;null&#x27;, undefined, &#x27;&#x27;, false, &#x27;false&#x27;, 0, &#x27;0&#x27;]).contains(was);
 		},
 	
 		eachParallel: function(arr, iterator, cb, bind){
@@ -216,13 +298,13 @@
 		},
 		
 		/**
-		 *	Wait <code>next</code> n ms to call next iteration
+		 *	Wait &lt;code&gt;next&lt;/code&gt; n ms to call next iteration
 		 *	@method eachInterval
-		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
-		 *								Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
+		 *	@param {Function} iterator	Iterator, called &lt;code&gt;this.length&lt;/code&gt; times.
+		 *								Passed arguments are &lt;code&gt;item&lt;/code&gt;, &lt;code&gt;index&lt;/code&gt;, &lt;code&gt;cursor&lt;/code&gt; and &lt;code&gt;Array&lt;/code&gt; instance.
 		 *	@param {Function} [cb]		Callback executed after last iteration.
 		 *	@param {Function} [delay]	Delay between each iteration.
-		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
+		 *	@param {Object} [bind]	 	Object bound to iterator, default to &lt;code&gt;this&lt;/code&gt; instance.
 		 *	@return {Array} this		Array instance
 		 */
 		eachInterval: function(arr, iterator, cb, delay, bind){
@@ -234,33 +316,33 @@
 		},
 		
 		/**
-		 *	Wait <code>next</code> cursor to be called before next iteration
+		 *	Wait &lt;code&gt;next&lt;/code&gt; cursor to be called before next iteration
 		 *	@method eachAsync
-		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
-		 *								Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
+		 *	@param {Function} iterator	Iterator, called &lt;code&gt;this.length&lt;/code&gt; times.
+		 *								Passed arguments are &lt;code&gt;item&lt;/code&gt;, &lt;code&gt;index&lt;/code&gt;, &lt;code&gt;cursor&lt;/code&gt; and &lt;code&gt;Array&lt;/code&gt; instance.
 		 *	@param {Function} [cb]		Callback executed after last iteration.
-		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
+		 *	@param {Object} [bind]	 	Object bound to iterator, default to &lt;code&gt;this&lt;/code&gt; instance.
 		 *	@return {Array} this		Array instance
 		 *	@example
 		 *		[1, 2, 3, 4].eachAsync(function(item, index, cursor, ar){
 		 *			new Request({
-		 *				url: '/rest/' + index,
+		 *				url: &#x27;/rest/&#x27; + index,
 		 *				onSuccess: function(){
-		 *					console.info('item #' + index + ' posted');
+		 *					console.info(&#x27;item #&#x27; + index + &#x27; posted&#x27;);
 		 *					cursor();
 		 *				}
 		 *			}).post();
-		 *		}, function(){ console.info('complete'); })
+		 *		}, function(){ console.info(&#x27;complete&#x27;); })
 		 *
 		 *		// Works with an array of functions...
 		 *		[function(cursor){
 		 *			new Request({
-		 *				url: '/some/url/123',
+		 *				url: &#x27;/some/url/123&#x27;,
 		 *				onSuccess: cursor
 		 *			}).get();
 		 *		}, function(cursor){
 		 *			new Request({
-		 *				url: '/some/url/456',
+		 *				url: &#x27;/some/url/456&#x27;,
 		 *				onSuccess: cursor
 		 *			}).get();
 		 *		}].eachAsync(function(item, index, cursor, ar){
@@ -279,19 +361,19 @@
 				loop = function(){
 					var cursor;
 					
-					if(i >= _(arr).size())
+					if(i &gt;= _(arr).size())
 						cursor = function(){};
 					
-					else if(i == _(arr).size() - 1 && _.isFunction(cb))
+					else if(i == _(arr).size() - 1 &amp;&amp; _.isFunction(cb))
 						cursor = function(){
 							cb.call(bind || this);
 							loop.call(this);
 						}.bind(this);
 					
-					else if(i < _(arr).size())
+					else if(i &lt; _(arr).size())
 						cursor = loop.bind(this);
 					
-					if(i < _(arr).size()){
+					if(i &lt; _(arr).size()){
 						if(_.isIterable(arr))
 							iterator.call(bind || this, values[i], keys[i], i, cursor, this);	
 						
@@ -313,11 +395,11 @@
 		 *	@return {Number}			Closest value
 		 */
 		closest: function(obj, number){		
-			if((current = obj.length) < 2)
+			if((current = obj.length) &lt; 2)
 				return l - 1;
 				
 			for(var current, previous = Math.abs(obj[--current] - number); current--;)
-				if(previous < (previous = Math.abs(obj[current] - number)))
+				if(previous &lt; (previous = Math.abs(obj[current] - number)))
 					break;
 					
 			return obj[current + 1];
@@ -325,10 +407,10 @@
 			var closest = -1,
 				prev = Math.abs(obj[0] - number);
 			
-			for (var i = 1; i < obj.length; i++){
+			for (var i = 1; i &lt; obj.length; i++){
 				var diff = Math.abs(obj[i] - number);
 				
-				if (diff <= prev){
+				if (diff &lt;= prev){
 					prev = diff;
 					closest = obj[i];
 				}
@@ -377,4 +459,22 @@
 			}
 		}
 	});
-})(Function('return this')());
+})(Function(&#x27;return this&#x27;)());
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
