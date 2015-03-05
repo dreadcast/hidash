@@ -13,17 +13,30 @@ gulp.task('scripts', function(cb){
 });
 
 // Version
-gulp.task('version', function(){
-	var version = process.argv[4];
-
-	gulp.src('./*.json')
+var version;
+gulp.task('setVersion', function(){
+	version = process.argv[4];
+	
+	gulp.src('./**.json')
 		.pipe(jeditor({
 			version: version
 		}))
-		.pipe(gulp.dest('./'))
-		//.pipe(git.commit('Changed version to ' + version))
+		.pipe(gulp.dest('.'));
+});
+
+gulp.task('commitVersion', ['setVersion'], function(){
+	gulp.src('./**.json')
+		.pipe(git.commit('Changed version to ' + version));
+});
+
+gulp.task('tagVersion', ['commitVersion'], function(){
+	gulp.src('./**.json')
 		.pipe(git.tag(version, 'Changed version to ' + version));
 });
+
+gulp.task('version', ['setVersion', 'commitVersion', 'tagVersion']);
+
+
 
 gulp.task('doc', function(cb){
 	fs.readFile('yuidoc.json', function(err, data){
