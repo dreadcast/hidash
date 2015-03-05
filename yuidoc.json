@@ -4,7 +4,9 @@
 	"version": "0.1.2",
 	"url": "https://github.com/dreadcast/hidash",
 	"options": {
-		"paths": ["src"],
+		"paths": [
+			"src"
+		],
 		"exclude": "bower_components",
 		"outdir": "doc"
 	}

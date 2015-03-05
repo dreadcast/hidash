@@ -8,7 +8,10 @@
 		"type": "git",
 		"url": "git@github.com:dreadcast/hidash.git"
 	},
-	"ignore": [".jshintrc", "**/*.txt"],
+	"ignore": [
+		".jshintrc",
+		"**/*.txt"
+	],
 	"dependencies": {
 		"lodash": "2.4.1"
 	},

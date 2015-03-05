@@ -9,7 +9,10 @@
 		"url": "git@github.com:dreadcast/hidash.git"
 	},
 	"license": "MIT",
-	"keywords": ["lodash", "underscore"],
+	"keywords": [
+		"lodash",
+		"underscore"
+	],
 	"dependencies": {
 		"lodash": "2.4.1"
 	},
@@ -17,6 +20,7 @@
 		"gulp": "3.8.11",
 		"gulp-git": "1.0.1",
 		"gulp-uglify": "1.1.0",
+		"gulp-json-editor": "2.2.1",
 		"js-beautify": "1.5.4",
 		"yuidocjs": "0.5.0",
 		"uglify-js": ">=2.4"
