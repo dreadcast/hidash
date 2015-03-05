@@ -4,6 +4,7 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	beautify = require('js-beautify').js_beautify,
 	git = require('gulp-git'),
+	jeditor = require('gulp-json-editor'),
 	_ = require('./src/hidash.js');
 
 gulp.task('scripts', function(cb){
@@ -15,30 +16,14 @@ gulp.task('scripts', function(cb){
 gulp.task('version', function(cb){
 	var version = process.argv[4];
 
-	_.eachAsync(['yuidoc', 'bower', 'package'], function(filename, index, cursor){
-		fs.readFile(filename + '.json', {
-			encoding: 'utf8'
-		}, function(err, data){
-			if(err)
-				throw new Error('Error reading ' + filename + '.json');
-			
-			var pack = JSON.parse(data);
-			
-			pack.version = version;
-			
-			fs.writeFile(filename + '.json', beautify(JSON.stringify(pack), {
-				indent_char: '\t',
-				indent_size: 1
-			}), {
-				encoding: 'utf8'
-			}, cursor);
-		});
-	}, function(){
-		return gulp.src('./**.json')
-			.pipe(git.add())
-			.pipe(git.commit('Changed version to ' + version))
-			.pipe(git.tag(version, 'Changed version to ' + version))
-	});
+
+	gulp.src('./**.json')
+		.pipe(jeditor({
+			version: version
+		}))
+		.pipe(gulp.dest('.'))
+		.pipe(git.commit('Changed version to ' + version))
+		.pipe(git.tag(version, 'Changed version to ' + version));
 });
 
 gulp.task('doc', function(cb){
