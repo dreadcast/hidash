@@ -236,7 +236,7 @@
                 "type": "Array"
             },
             "example": [
-                "\n\t[1, 2, 3, 4].eachAsync(function(item, index, cursor, ar){\n\t\tnew Request({\n\t\t\turl: '/rest/' + index,\n\t\t\tonSuccess: function(){\n\t\t\t\tconsole.info('item #' + index + ' posted');\n\t\t\t\tcursor();\n\t\t\t}\n\t\t}).post();\n\t}, function(){ console.info('complete'); })\n\n\t// Works with an array of functions...\n\t[function(cursor){\n\t\tnew Request({\n\t\t\turl: '/some/url/123',\n\t\t\tonSuccess: cursor\n\t\t}).get();\n\t}, function(cursor){\n\t\tnew Request({\n\t\t\turl: '/some/url/456',\n\t\t\tonSuccess: cursor\n\t\t}).get();\n\t}].eachAsync(function(item, index, cursor, ar){\n\t\titem(cursor);\n\t});"
+                "\n\t_.eachAsync([1, 2, 3, 4], function(item, index, cursor, ar){\n\t\tnew Request({\n\t\t\turl: '/rest/' + index,\n\t\t\tonSuccess: function(){\n\t\t\t\tconsole.info('item #' + index + ' posted');\n\t\t\t\tcursor();\n\t\t\t}\n\t\t}).post();\n\t}, function(){ console.info('complete'); })\n\n\t// Works with an array of functions...\n\t[function(cursor){\n\t\tnew Request({\n\t\t\turl: '/some/url/123',\n\t\t\tonSuccess: cursor\n\t\t}).get();\n\t}, function(cursor){\n\t\tnew Request({\n\t\t\turl: '/some/url/456',\n\t\t\tonSuccess: cursor\n\t\t}).get();\n\t}].eachAsync(function(item, index, cursor, ar){\n\t\titem(cursor);\n\t});"
             ],
             "class": "Hidash",
             "module": "Lodash"
