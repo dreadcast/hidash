@@ -57,8 +57,16 @@ gulp.task('doc', ['tag'], function(done){
 		
 		yuiOptions = doc.options;
 		
-		var yui = new Y.YUIDoc(yuiOptions),
-			yuiJson = yui.run(),
+		yuiOptions.project = {
+			theme: 'simple',
+			name: doc.name,
+			logo: doc.logo,
+			description: doc.description,
+			url: doc.url,
+			version: doc.version
+		};
+		
+		var yuiJson = (new Y.YUIDoc(yuiOptions)).run(),
 			builder = new Y.DocBuilder(yuiOptions, yuiJson);
 		
 		builder.compile(function(){
@@ -70,16 +78,26 @@ gulp.task('doc', ['tag'], function(done){
 	});
 });
 gulp.task('checkoutGhPages', ['doc'], function(done){
-	git.checkout('gh-pages', function(){
-		fs.move(tmpDir + '/doc', yuiOptions.outdir, {
-			clobber: true
-		}, done);
-	});
+	git.checkout('gh-pages', {
+		args: '-f'
+	}, done);
 });
 
+
+// Copy doc files
+gulp.task('copydoc', ['checkoutGhPages'], function(done){
+	fs.removeSync(yuiOptions.outdir);
+
+	fs.mkdirsSync(yuiOptions.outdir);
 	
-// Commit & tag docs
-gulp.task('commitdoc', ['checkoutGhPages'], function(){
+	fs.move(tmpDir + '/doc', yuiOptions.outdir, {
+		clobber: true
+	}, done);
+});
+
+
+// Commit docs
+gulp.task('commitdoc', ['copydoc'], function(){
 	return gulp.src('./')
 		.pipe(git.add())
 		.pipe(git.commit('Release ' + version));
@@ -98,7 +116,9 @@ gulp.task('pushdoc', ['commitdoc'], function(done){
 
 // Return to master & push
 gulp.task('checkoutMaster', ['pushdoc'], function(done){
-	git.checkout('master', done);
+	git.checkout('master', {
+		args: '-f'
+	}, done);
 });
 
 gulp.task('push', ['checkoutMaster'], function(done){
