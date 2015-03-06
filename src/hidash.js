@@ -242,7 +242,7 @@
 		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
 		 *	@return {Array} this		Array instance
 		 *	@example
-		 *		[1, 2, 3, 4].eachAsync(function(item, index, cursor, ar){
+		 *		_.eachAsync([1, 2, 3, 4], function(item, index, cursor, ar){
 		 *			new Request({
 		 *				url: '/rest/' + index,
 		 *				onSuccess: function(){
