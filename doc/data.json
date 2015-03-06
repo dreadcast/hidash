@@ -1,5 +1,11 @@
 {
-    "project": {},
+    "project": {
+        "theme": "simple",
+        "name": "Hidash API",
+        "description": "Hidash is a set of mixins for lodash.",
+        "url": "https://github.com/dreadcast/hidash",
+        "version": "0.1.10"
+    },
     "files": {
         "src/hidash.js": {
             "name": "src/hidash.js",
