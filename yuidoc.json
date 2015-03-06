@@ -1,7 +1,7 @@
 {
 	"name": "Hidash API",
 	"description": "Hidash is a set of mixins for lodash.",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"url": "https://github.com/dreadcast/hidash",
 	"options": {
 		"paths": [

@@ -5,14 +5,11 @@ var gulp = require('gulp'),
 	git = require('gulp-git'),
 	bump = require('gulp-bump');
 
-gulp.task('scripts', function(cb){
-	return gulp.src('src/hidash.js')
-		.pipe(uglify())
-		.pipe(gulp.dest('dist'));
-});
+var jsonFiles = ['./package.json', './bower.json', './yuidoc.json'],
+	bumpType,
+	version,
+	message;
 
-// Version
-var jsonFiles = ['./package.json', './bower.json', './yuidoc.json'];
 
 gulp.task('bump', function(){
 	bumpType = process.argv[4];
@@ -24,25 +21,7 @@ gulp.task('bump', function(){
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('tag', ['bump'], function(){
-	var pkg = require('./package.json'),
-		v = pkg.version,
-		message = 'Release ' + v;
-	
-	return gulp.src('./')
-		.pipe(git.add())
-		.pipe(git.commit(message))
-		.on('end', function(){
-			git.tag(v, message, function(err){
-				git.push('origin', 'master', {
-					args: '--tags'
-				});
-			});
-		});
-});
-
-
-gulp.task('doc', function(cb){
+gulp.task('doc', ['bump'], function(cb){
 	fs.readFile('yuidoc.json', function(err, data){
 		var doc = JSON.parse(data),
 			Y = require('yuidocjs'),
@@ -53,10 +32,30 @@ gulp.task('doc', function(cb){
 	});
 });
 
-
-
-gulp.task('watch', function() {
-  gulp.watch('src/hidash.js', ['scripts', 'doc']);
+gulp.task('scripts', ['doc'], function(cb){
+	return gulp.src('src/*.js')
+		.pipe(uglify())
+		.pipe(gulp.dest('dist'));
 });
 
-//gulp.task('default', ['watch', 'scripts', 'doc']);
+gulp.task('commit', ['scripts'], function(){
+	var pkg = require('./package.json');
+	version = pkg.version;
+	message = 'Release ' + version;
+		
+	return gulp.src('./')
+		.pipe(git.add())
+		.pipe(git.commit(message));
+});
+
+gulp.task('tag', ['commit'], function(done){
+	git.tag(version, message, done);
+});
+
+gulp.task('push', ['tag'], function(done){
+	git.push('origin', 'master', {
+		args: ' --tags'
+	});
+});
+
+gulp.task('deploy', ['push']);
