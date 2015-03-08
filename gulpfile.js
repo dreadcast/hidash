@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
 	Y = require('yuidocjs'),
-	fs = require('fs'),
 	uglify = require('gulp-uglify'),
 	git = require('gulp-git'),
 	bump = require('gulp-bump'),

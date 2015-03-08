@@ -15,5 +15,5 @@
 	"dependencies": {
 		"lodash": "2.4.1"
 	},
-	"main": "src/hidash.js"
+	"main": "dist/hidash.js"
 }

@@ -9,7 +9,8 @@
 		var _ = require('lodash');		
 		
 		if(typeof exports !== 'undefined' && typeof module !== 'undefined' && module.exports)
-				module.exports = _;
+			module.exports = _;
+	
 	} else {
 		var _ = root._;
 	}
@@ -51,6 +52,7 @@
 		/**
 		 *	Returns penultimate item from an array or null if array contains less than 2 items
 		 *	@method penultimate
+		 *	@param {Object} obj			Object or array to get penultimate item from
 		 *	@return {Mixed}				Penultimate item from provided array
 		 */
 		penultimate: function(obj){
@@ -60,8 +62,9 @@
 		/**
 		 *	Joins items from an array with a different glue before last item
 		 *	@method joinLast
+		 *	@param {Array} obj			Array to join
 		 *	@param {String} glue		Items delimiter
-		 *	@param {String} stick		Delimiter vefore last item
+		 *	@param {String} stick		Delimiter before last item
 		 *	@return {String}			Joined array
 		 */
 		joinLast: function(obj, glue, stick){
@@ -73,7 +76,8 @@
 		/**
 		 *	Get property from object following provided path 
 		 *	@method getFromPath
-		 *	@param {String} path		Path to property
+		 *	@param {Object} obj			Object to get property from
+		 *	@param {String} path		Path to property (Dot-delimited)
 		 *	@return {Mixed}				Property
 		 */
 		getFromPath: function(obj, path){
@@ -93,6 +97,7 @@
 		/**
 		 *	Set property of object following provided path 
 		 *	@method setFromPath
+		 *	@param {Object} obj			Destination object
 		 *	@param {String} path		Path to property
 		 *	@param {Mixed} value		Property value
 		 *	@return {Object}			Object
@@ -119,6 +124,7 @@
 		/**
 		 *	Removes property of object following provided path 
 		 *	@method eraseFromPath
+		 *	@param {Object} obj			Object to remove property from
 		 *	@param {String} path		Path to property
 		 *	@return {Object}			Object
 		 */
@@ -142,6 +148,13 @@
 			return cl;
 		},
 		
+		/**
+		 *	Retrieve object's key paired to given property 
+		 *	@method keyOf
+		 *	@param {Object} obj			Object to get key from
+		 *	@param {Mixed} value		Value corresponding to key
+		 *	@return {String}			Key or null if no key was found
+		 */
 		keyOf: function(obj, value){
 			for(var key in obj)
 				if(Object.prototype.hasOwnProperty.call(obj, key) && obj[key] === value)
@@ -150,6 +163,12 @@
 			return null;
 		},
 		
+		/**
+		 *	Recursively merge provided objects. Source object is affected
+		 *	@method deepmerge
+		 *	@param {Object} obj+		Objects to merge
+		 *	@return {Object}			Merged object
+		 */
 		deepmerge: function(){
 			var obj1 = arguments[0];
 			
@@ -216,8 +235,9 @@
 		},
 		
 		/**
-		 *	Wait <code>next</code> n ms to call next iteration
-		 *	@method eachInterval
+		 *	Wait <code>next</code> n ms to call next iteration. Alias: eachInterval
+		 *	@method eachDelayed
+		 *	@param {Object} obj			Object or array.
 		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
 		 *								Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
 		 *	@param {Function} [cb]		Callback executed after last iteration.
@@ -225,7 +245,7 @@
 		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
 		 *	@return {Array} this		Array instance
 		 */
-		eachInterval: function(arr, iterator, cb, delay, bind){
+		eachDelayed: function(arr, iterator, cb, delay, bind){
 			return _.eachAsync(arr, function(){
 				setTimeout(function(){
 					iterator.apply(this, arguments);
@@ -233,11 +253,14 @@
 			}, cb, bind);
 		},
 		
+		eachInterval: eachDelayed,
+		
 		/**
 		 *	Wait <code>next</code> cursor to be called before next iteration
 		 *	@method eachAsync
+		 *	@param {Object} obj			Object or array.
 		 *	@param {Function} iterator	Iterator, called <code>this.length</code> times.
-		 *								Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
+		 *								Passed arguments are <code>item</code>, <code>key</code> (if provided obj is an Object), <code>index</code>, <code>cursor</code> and <code>Array</code> instance.
 		 *	@param {Function} [cb]		Callback executed after last iteration.
 		 *	@param {Object} [bind]	 	Object bound to iterator, default to <code>this</code> instance.
 		 *	@return {Array} this		Array instance
@@ -253,7 +276,7 @@
 		 *		}, function(){ console.info('complete'); })
 		 *
 		 *		// Works with an array of functions...
-		 *		[function(cursor){
+		 *		_.eachAsync([function(cursor){
 		 *			new Request({
 		 *				url: '/some/url/123',
 		 *				onSuccess: cursor
@@ -263,36 +286,36 @@
 		 *				url: '/some/url/456',
 		 *				onSuccess: cursor
 		 *			}).get();
-		 *		}].eachAsync(function(item, index, cursor, ar){
+		 *		}], function(item, index, cursor, ar){
 		 *			item(cursor);
 		 *		});
 		 */
-		eachAsync: function(arr, iterator, cb, bind){
-			if(_(arr).size() == 0)
+		eachAsync: function(obj, iterator, cb, bind){
+			if(_(obj).size() == 0)
 				return cb.call(bind);
 			
-			if(_.isIterable(arr))
-				var keys = _.keys(arr),
-					values = _.values(arr);
+			if(_.isIterable(obj))
+				var keys = _.keys(obj),
+					values = _.values(obj);
 										
 			var i = 0,
 				loop = function(){
 					var cursor;
 					
-					if(i >= _(arr).size())
+					if(i >= _(obj).size())
 						cursor = function(){};
 					
-					else if(i == _(arr).size() - 1 && _.isFunction(cb))
+					else if(i == _(obj).size() - 1 && _.isFunction(cb))
 						cursor = function(){
 							cb.call(bind || this);
 							loop.call(this);
 						}.bind(this);
 					
-					else if(i < _(arr).size())
+					else if(i < _(obj).size())
 						cursor = loop.bind(this);
 					
-					if(i < _(arr).size()){
-						if(_.isIterable(arr))
+					if(i < _(obj).size()){
+						if(_.isIterable(obj))
 							iterator.call(bind || this, values[i], keys[i], i, cursor, this);	
 						
 						else			
@@ -302,9 +325,9 @@
 					i++;
 				};
 				
-			loop.call(arr);
+			loop.call(obj);
 			
-			return arr;
+			return obj;
 		},
 		
 		/**
