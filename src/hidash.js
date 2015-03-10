@@ -15,27 +15,6 @@
 		var _ = root._;
 	}
 	
-	var mergeRecursive = function(obj1, obj2){
-		for(var p in obj2){
-			try {
-				if(_.isArray(obj1[p]) && _.isArray(obj2[p]))
-					obj1[p] = _.union(obj1[p], obj2[p]);
-				
-				// Property in destination object set; update its value.
-				else if(obj2[p].constructor == Object)
-					obj1[p] = mergeRecursive(obj1[p], obj2[p]) || {};
-				
-				else
-					obj1[p] = obj2[p];		
-			} catch(e){
-				// Property in destination object not set; create it and set its value.
-				obj1[p] = obj2[p];
-			}
-		}
-		
-		return obj1;
-	};
-	
 	_.mixin({
 		/**
 		 *	Creates an array containing passed argument or return argument if it is already an array.
@@ -148,6 +127,8 @@
 			return cl;
 		},
 		
+		deepmerge: _.merge,
+		
 		/**
 		 *	Retrieve object's key paired to given property 
 		 *	@method keyOf
@@ -162,22 +143,7 @@
 
 			return null;
 		},
-		
-		/**
-		 *	Recursively merge provided objects. Source object is affected
-		 *	@method deepmerge
-		 *	@param {Object} obj+		Objects to merge
-		 *	@return {Object}			Merged object
-		 */
-		deepmerge: function(){
-			var obj1 = arguments[0];
-			
-			for(var q = 1; q < arguments.length; q++)
-				mergeRecursive(obj1, arguments[q]);
-							
-			return obj1;
-		},
-		
+				
 		/**
 		 *	Utils
 		 */
@@ -253,7 +219,7 @@
 			}, cb, bind);
 		},
 		
-		eachInterval: eachDelayed,
+		eachInterval: _.eachDelayed,
 		
 		/**
 		 *	Wait <code>next</code> cursor to be called before next iteration
