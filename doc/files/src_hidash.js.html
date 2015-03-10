@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="Hidash API" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.10</em>
+            <em>API Docs for: 0.1.11</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -91,31 +91,11 @@
 		var _ = require(&#x27;lodash&#x27;);		
 		
 		if(typeof exports !== &#x27;undefined&#x27; &amp;&amp; typeof module !== &#x27;undefined&#x27; &amp;&amp; module.exports)
-				module.exports = _;
+			module.exports = _;
+	
 	} else {
 		var _ = root._;
 	}
-	
-	var mergeRecursive = function(obj1, obj2){
-		for(var p in obj2){
-			try {
-				if(_.isArray(obj1[p]) &amp;&amp; _.isArray(obj2[p]))
-					obj1[p] = _.union(obj1[p], obj2[p]);
-				
-				// Property in destination object set; update its value.
-				else if(obj2[p].constructor == Object)
-					obj1[p] = mergeRecursive(obj1[p], obj2[p]) || {};
-				
-				else
-					obj1[p] = obj2[p];		
-			} catch(e){
-				// Property in destination object not set; create it and set its value.
-				obj1[p] = obj2[p];
-			}
-		}
-		
-		return obj1;
-	};
 	
 	_.mixin({
 		/**
@@ -133,6 +113,7 @@
 		/**
 		 *	Returns penultimate item from an array or null if array contains less than 2 items
 		 *	@method penultimate
+		 *	@param {Object} obj			Object or array to get penultimate item from
 		 *	@return {Mixed}				Penultimate item from provided array
 		 */
 		penultimate: function(obj){
@@ -142,8 +123,9 @@
 		/**
 		 *	Joins items from an array with a different glue before last item
 		 *	@method joinLast
+		 *	@param {Array} obj			Array to join
 		 *	@param {String} glue		Items delimiter
-		 *	@param {String} stick		Delimiter vefore last item
+		 *	@param {String} stick		Delimiter before last item
 		 *	@return {String}			Joined array
 		 */
 		joinLast: function(obj, glue, stick){
@@ -155,7 +137,8 @@
 		/**
 		 *	Get property from object following provided path 
 		 *	@method getFromPath
-		 *	@param {String} path		Path to property
+		 *	@param {Object} obj			Object to get property from
+		 *	@param {String} path		Path to property (Dot-delimited)
 		 *	@return {Mixed}				Property
 		 */
 		getFromPath: function(obj, path){
@@ -175,6 +158,7 @@
 		/**
 		 *	Set property of object following provided path 
 		 *	@method setFromPath
+		 *	@param {Object} obj			Destination object
 		 *	@param {String} path		Path to property
 		 *	@param {Mixed} value		Property value
 		 *	@return {Object}			Object
@@ -201,6 +185,7 @@
 		/**
 		 *	Removes property of object following provided path 
 		 *	@method eraseFromPath
+		 *	@param {Object} obj			Object to remove property from
 		 *	@param {String} path		Path to property
 		 *	@return {Object}			Object
 		 */
@@ -224,6 +209,15 @@
 			return cl;
 		},
 		
+		deepmerge: _.merge,
+		
+		/**
+		 *	Retrieve object&#x27;s key paired to given property 
+		 *	@method keyOf
+		 *	@param {Object} obj			Object to get key from
+		 *	@param {Mixed} value		Value corresponding to key
+		 *	@return {String}			Key or null if no key was found
+		 */
 		keyOf: function(obj, value){
 			for(var key in obj)
 				if(Object.prototype.hasOwnProperty.call(obj, key) &amp;&amp; obj[key] === value)
@@ -231,16 +225,7 @@
 
 			return null;
 		},
-		
-		deepmerge: function(){
-			var obj1 = arguments[0];
-			
-			for(var q = 1; q &lt; arguments.length; q++)
-				mergeRecursive(obj1, arguments[q]);
-							
-			return obj1;
-		},
-		
+				
 		/**
 		 *	Utils
 		 */
@@ -298,8 +283,9 @@
 		},
 		
 		/**
-		 *	Wait &lt;code&gt;next&lt;/code&gt; n ms to call next iteration
-		 *	@method eachInterval
+		 *	Wait &lt;code&gt;next&lt;/code&gt; n ms to call next iteration. Alias: eachInterval
+		 *	@method eachDelayed
+		 *	@param {Object} obj			Object or array.
 		 *	@param {Function} iterator	Iterator, called &lt;code&gt;this.length&lt;/code&gt; times.
 		 *								Passed arguments are &lt;code&gt;item&lt;/code&gt;, &lt;code&gt;index&lt;/code&gt;, &lt;code&gt;cursor&lt;/code&gt; and &lt;code&gt;Array&lt;/code&gt; instance.
 		 *	@param {Function} [cb]		Callback executed after last iteration.
@@ -307,7 +293,7 @@
 		 *	@param {Object} [bind]	 	Object bound to iterator, default to &lt;code&gt;this&lt;/code&gt; instance.
 		 *	@return {Array} this		Array instance
 		 */
-		eachInterval: function(arr, iterator, cb, delay, bind){
+		eachDelayed: function(arr, iterator, cb, delay, bind){
 			return _.eachAsync(arr, function(){
 				setTimeout(function(){
 					iterator.apply(this, arguments);
@@ -315,11 +301,14 @@
 			}, cb, bind);
 		},
 		
+		eachInterval: _.eachDelayed,
+		
 		/**
 		 *	Wait &lt;code&gt;next&lt;/code&gt; cursor to be called before next iteration
 		 *	@method eachAsync
+		 *	@param {Object} obj			Object or array.
 		 *	@param {Function} iterator	Iterator, called &lt;code&gt;this.length&lt;/code&gt; times.
-		 *								Passed arguments are &lt;code&gt;item&lt;/code&gt;, &lt;code&gt;index&lt;/code&gt;, &lt;code&gt;cursor&lt;/code&gt; and &lt;code&gt;Array&lt;/code&gt; instance.
+		 *								Passed arguments are &lt;code&gt;item&lt;/code&gt;, &lt;code&gt;key&lt;/code&gt; (if provided obj is an Object), &lt;code&gt;index&lt;/code&gt;, &lt;code&gt;cursor&lt;/code&gt; and &lt;code&gt;Array&lt;/code&gt; instance.
 		 *	@param {Function} [cb]		Callback executed after last iteration.
 		 *	@param {Object} [bind]	 	Object bound to iterator, default to &lt;code&gt;this&lt;/code&gt; instance.
 		 *	@return {Array} this		Array instance
@@ -335,7 +324,7 @@
 		 *		}, function(){ console.info(&#x27;complete&#x27;); })
 		 *
 		 *		// Works with an array of functions...
-		 *		[function(cursor){
+		 *		_.eachAsync([function(cursor){
 		 *			new Request({
 		 *				url: &#x27;/some/url/123&#x27;,
 		 *				onSuccess: cursor
@@ -345,36 +334,36 @@
 		 *				url: &#x27;/some/url/456&#x27;,
 		 *				onSuccess: cursor
 		 *			}).get();
-		 *		}].eachAsync(function(item, index, cursor, ar){
+		 *		}], function(item, index, cursor, ar){
 		 *			item(cursor);
 		 *		});
 		 */
-		eachAsync: function(arr, iterator, cb, bind){
-			if(_(arr).size() == 0)
+		eachAsync: function(obj, iterator, cb, bind){
+			if(_(obj).size() == 0)
 				return cb.call(bind);
 			
-			if(_.isIterable(arr))
-				var keys = _.keys(arr),
-					values = _.values(arr);
+			if(_.isIterable(obj))
+				var keys = _.keys(obj),
+					values = _.values(obj);
 										
 			var i = 0,
 				loop = function(){
 					var cursor;
 					
-					if(i &gt;= _(arr).size())
+					if(i &gt;= _(obj).size())
 						cursor = function(){};
 					
-					else if(i == _(arr).size() - 1 &amp;&amp; _.isFunction(cb))
+					else if(i == _(obj).size() - 1 &amp;&amp; _.isFunction(cb))
 						cursor = function(){
 							cb.call(bind || this);
 							loop.call(this);
 						}.bind(this);
 					
-					else if(i &lt; _(arr).size())
+					else if(i &lt; _(obj).size())
 						cursor = loop.bind(this);
 					
-					if(i &lt; _(arr).size()){
-						if(_.isIterable(arr))
+					if(i &lt; _(obj).size()){
+						if(_.isIterable(obj))
 							iterator.call(bind || this, values[i], keys[i], i, cursor, this);	
 						
 						else			
@@ -384,9 +373,9 @@
 					i++;
 				};
 				
-			loop.call(arr);
+			loop.call(obj);
 			
-			return arr;
+			return obj;
 		},
 		
 		/**

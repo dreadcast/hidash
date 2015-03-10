@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="Hidash API" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.10</em>
+            <em>API Docs for: 0.1.11</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -123,7 +123,7 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_eachInterval">eachInterval</a>
+                                <a href="#method_eachDelayed">eachDelayed</a>
 
                             </li>
                             <li class="index-item method">
@@ -144,6 +144,10 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_joinLast">joinLast</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_keyOf">keyOf</a>
 
                             </li>
                             <li class="index-item method">
@@ -195,7 +199,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l362"><code>src&#x2F;hidash.js:362</code></a>
+        <a href="../files/src_hidash.js.html#l351"><code>src&#x2F;hidash.js:351</code></a>
         </p>
 
 
@@ -267,7 +271,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l310"><code>src&#x2F;hidash.js:310</code></a>
+        <a href="../files/src_hidash.js.html#l299"><code>src&#x2F;hidash.js:299</code></a>
         </p>
 
 
@@ -298,6 +302,9 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
+                        <code>obj</code>
+                </li>
+                <li class="arg">
                         <code>iterator</code>
                 </li>
                 <li class="arg">
@@ -322,7 +329,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l236"><code>src&#x2F;hidash.js:236</code></a>
+        <a href="../files/src_hidash.js.html#l224"><code>src&#x2F;hidash.js:224</code></a>
         </p>
 
 
@@ -339,13 +346,24 @@
 
             <ul class="params-list">
                 <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object or array.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
                         <code class="param-name">iterator</code>
                         <span class="type">Function</span>
 
 
                     <div class="param-description">
                         <p>Iterator, called <code>this.length</code> times.
-                            Passed arguments are <code>item</code>, <code>index</code>, <code>cursor</code> and <code>Array</code> instance.</p>
+                            Passed arguments are <code>item</code>, <code>key</code> (if provided obj is an Object), <code>index</code>, <code>cursor</code> and <code>Array</code> instance.</p>
 
                     </div>
 
@@ -403,7 +421,7 @@
 }, function(){ console.info(&#39;complete&#39;); })
 
 // Works with an array of functions...
-[function(cursor){
+_.eachAsync([function(cursor){
     new Request({
         url: &#39;/some/url/123&#39;,
         onSuccess: cursor
@@ -413,18 +431,21 @@
         url: &#39;/some/url/456&#39;,
         onSuccess: cursor
     }).get();
-}].eachAsync(function(item, index, cursor, ar){
+}], function(item, index, cursor, ar){
     item(cursor);
 });
 </code></pre>
             </div>
         </div>
 </div>
-<div id="method_eachInterval" class="method item">
-    <h3 class="name"><code>eachInterval</code></h3>
+<div id="method_eachDelayed" class="method item">
+    <h3 class="name"><code>eachDelayed</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>obj</code>
+                </li>
                 <li class="arg">
                         <code>iterator</code>
                 </li>
@@ -453,7 +474,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l218"><code>src&#x2F;hidash.js:218</code></a>
+        <a href="../files/src_hidash.js.html#l203"><code>src&#x2F;hidash.js:203</code></a>
         </p>
 
 
@@ -461,7 +482,7 @@
     </div>
 
     <div class="description">
-        <p>Wait <code>next</code> n ms to call next iteration</p>
+        <p>Wait <code>next</code> n ms to call next iteration. Alias: eachInterval</p>
 
     </div>
 
@@ -469,6 +490,17 @@
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object or array.</p>
+
+                    </div>
+
+                </li>
                 <li class="param">
                         <code class="param-name">iterator</code>
                         <span class="type">Function</span>
@@ -538,6 +570,9 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
+                        <code>obj</code>
+                </li>
+                <li class="arg">
                         <code>path</code>
                 </li>
             </ul><span class="paren">)</span>
@@ -556,7 +591,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l119"><code>src&#x2F;hidash.js:119</code></a>
+        <a href="../files/src_hidash.js.html#l103"><code>src&#x2F;hidash.js:103</code></a>
         </p>
 
 
@@ -572,6 +607,17 @@
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object to remove property from</p>
+
+                    </div>
+
+                </li>
                 <li class="param">
                         <code class="param-name">path</code>
                         <span class="type">String</span>
@@ -616,7 +662,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l39"><code>src&#x2F;hidash.js:39</code></a>
+        <a href="../files/src_hidash.js.html#l19"><code>src&#x2F;hidash.js:19</code></a>
         </p>
 
 
@@ -647,6 +693,9 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
+                        <code>obj</code>
+                </li>
+                <li class="arg">
                         <code>path</code>
                 </li>
             </ul><span class="paren">)</span>
@@ -665,7 +714,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l73"><code>src&#x2F;hidash.js:73</code></a>
+        <a href="../files/src_hidash.js.html#l55"><code>src&#x2F;hidash.js:55</code></a>
         </p>
 
 
@@ -682,12 +731,23 @@
 
             <ul class="params-list">
                 <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object to get property from</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
                         <code class="param-name">path</code>
                         <span class="type">String</span>
 
 
                     <div class="param-description">
-                        <p>Path to property</p>
+                        <p>Path to property (Dot-delimited)</p>
 
                     </div>
 
@@ -725,7 +785,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l351"><code>src&#x2F;hidash.js:351</code></a>
+        <a href="../files/src_hidash.js.html#l340"><code>src&#x2F;hidash.js:340</code></a>
         </p>
 
 
@@ -756,6 +816,9 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
+                        <code>obj</code>
+                </li>
+                <li class="arg">
                         <code>glue</code>
                 </li>
                 <li class="arg">
@@ -777,7 +840,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l60"><code>src&#x2F;hidash.js:60</code></a>
+        <a href="../files/src_hidash.js.html#l41"><code>src&#x2F;hidash.js:41</code></a>
         </p>
 
 
@@ -793,6 +856,17 @@
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>Array to join</p>
+
+                    </div>
+
+                </li>
                 <li class="param">
                         <code class="param-name">glue</code>
                         <span class="type">String</span>
@@ -810,7 +884,7 @@
 
 
                     <div class="param-description">
-                        <p>Delimiter vefore last item</p>
+                        <p>Delimiter before last item</p>
 
                     </div>
 
@@ -830,10 +904,96 @@
 
 
 </div>
+<div id="method_keyOf" class="method item">
+    <h3 class="name"><code>keyOf</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>obj</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_hidash.js.html#l132"><code>src&#x2F;hidash.js:132</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Retrieve object&#39;s key paired to given property</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object to get key from</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Mixed</span>
+
+
+                    <div class="param-description">
+                        <p>Value corresponding to key</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>Key or null if no key was found</p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_penultimate" class="method item">
     <h3 class="name"><code>penultimate</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>obj</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
         <span class="returns-inline">
             <span class="type">Mixed</span>
@@ -848,7 +1008,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l51"><code>src&#x2F;hidash.js:51</code></a>
+        <a href="../files/src_hidash.js.html#l31"><code>src&#x2F;hidash.js:31</code></a>
         </p>
 
 
@@ -860,6 +1020,23 @@
 
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object or array to get penultimate item from</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
         <div class="returns">
             <h4>Returns:</h4>
@@ -891,7 +1068,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l340"><code>src&#x2F;hidash.js:340</code></a>
+        <a href="../files/src_hidash.js.html#l329"><code>src&#x2F;hidash.js:329</code></a>
         </p>
 
 
@@ -922,6 +1099,9 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
+                        <code>obj</code>
+                </li>
+                <li class="arg">
                         <code>path</code>
                 </li>
                 <li class="arg">
@@ -943,7 +1123,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_hidash.js.html#l93"><code>src&#x2F;hidash.js:93</code></a>
+        <a href="../files/src_hidash.js.html#l76"><code>src&#x2F;hidash.js:76</code></a>
         </p>
 
 
@@ -959,6 +1139,17 @@
             <h4>Parameters:</h4>
 
             <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">obj</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Destination object</p>
+
+                    </div>
+
+                </li>
                 <li class="param">
                         <code class="param-name">path</code>
                         <span class="type">String</span>
