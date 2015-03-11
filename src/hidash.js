@@ -177,7 +177,7 @@
 			if(_.isArray(was) && _compact(was).length == 0)
 				return true;
 			
-			return _([null, 'null', undefined, '', false, 'false', 0, '0']).contains(was);
+			return _.contains([null, 'null', undefined, '', false, 'false', 0, '0'], was);
 		},
 	
 		eachParallel: function(arr, iterator, cb, bind){
@@ -189,13 +189,13 @@
 						cb();
 				};
 			
-			if(_(arr).isIterable())
-				_(arr).each(function(item, key, index){
+			if(_.isIterable(arr))
+				_.each(arr, function(item, key, index){
 					iterator.call(bind || arr, item, key, index, cursor, arr);
 				});
 			
 			else
-				_(arr).each(function(item, index){
+				_.each(arr, function(item, index){
 					iterator.call(bind || arr, item, index, cursor, arr);
 				});
 		},
@@ -257,7 +257,7 @@
 		 *		});
 		 */
 		eachAsync: function(obj, iterator, cb, bind){
-			if(_(obj).size() == 0)
+			if(_.size(obj) == 0)
 				return cb.call(bind);
 			
 			if(_.isIterable(obj))
@@ -268,19 +268,19 @@
 				loop = function(){
 					var cursor;
 					
-					if(i >= _(obj).size())
+					if(i >= _.size(obj))
 						cursor = function(){};
 					
-					else if(i == _(obj).size() - 1 && _.isFunction(cb))
+					else if(i == _.size(obj) - 1 && _.isFunction(cb))
 						cursor = function(){
 							cb.call(bind || this);
 							loop.call(this);
 						}.bind(this);
 					
-					else if(i < _(obj).size())
+					else if(i < _.size(obj))
 						cursor = loop.bind(this);
 					
-					if(i < _(obj).size()){
+					if(i < _.size(obj)){
 						if(_.isIterable(obj))
 							iterator.call(bind || this, values[i], keys[i], i, cursor, this);	
 						
