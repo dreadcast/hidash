@@ -4,7 +4,7 @@
         "name": "Hidash API",
         "description": "Hidash is a set of mixins for lodash.",
         "url": "https://github.com/dreadcast/hidash",
-        "version": "0.2.0"
+        "version": "0.2.1"
     },
     "files": {
         "src/hidash.js": {
